@@ -1,7 +1,3 @@
-# CSES Problem Set
-
-{% embed url="https://cses.fi/problemset/" %}
-
 ## Introductory Problems
 
 ### [Weird Algorithm](https://cses.fi/problemset/task/1068)
