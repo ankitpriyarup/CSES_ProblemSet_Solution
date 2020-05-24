@@ -6,35 +6,35 @@
 int n, m;
 void DFS(vec<2, bool> &mp, vec<2, bool> &visited, int i, int j)
 {
-		if (i < 0 || i >= n || j < 0 || j >= m || visited[i][j] || !mp[i][j]) return;
-		visited[i][j] = true;
-		DFS(mp, visited, i+1, j);
-		DFS(mp, visited, i-1, j);
-		DFS(mp, visited, i, j+1);
-		DFS(mp, visited, i, j-1);
+    if (i < 0 || i >= n || j < 0 || j >= m || visited[i][j] || !mp[i][j]) return;
+    visited[i][j] = true;
+    DFS(mp, visited, i+1, j);
+    DFS(mp, visited, i-1, j);
+    DFS(mp, visited, i, j+1);
+    DFS(mp, visited, i, j-1);
 }
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		cin >> n >> m;
-		vec<2, bool> mp(n, m, false), visited(n, m, false);
-		for (int i = 0; i < n; ++i)
-		{
-				string str; cin >> str;
-				for (int j = 0; j < m; ++j) mp[i][j] = (str[j] == '.');
-		}
-		int res = 0;
-		for (int i = 0; i < n; ++i)
-		{
-				for (int j = 0; j < m; ++j)
-				{
-						if (visited[i][j] || !mp[i][j]) continue;
-						DFS(mp, visited, i, j);
-						res++;
-				}
-		}
-		cout << res << '\n';
-		return 0;
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    cin >> n >> m;
+    vec<2, bool> mp(n, m, false), visited(n, m, false);
+    for (int i = 0; i < n; ++i)
+    {
+        string str; cin >> str;
+        for (int j = 0; j < m; ++j) mp[i][j] = (str[j] == '.');
+    }
+    int res = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < m; ++j)
+        {
+            if (visited[i][j] || !mp[i][j]) continue;
+            DFS(mp, visited, i, j);
+            res++;
+        }
+    }
+    cout << res << '\n';
+    return 0;
 }
 ```
 
@@ -43,59 +43,59 @@ signed main()
 ```cpp
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		int n, m; cin >> n >> m;
-		vec<2, bool> mp(n, m, false), visited(n, m, false);
-		pii start, end;
-		for (int i = 0; i < n; ++i)
-		{
-				string str; cin >> str;
-				for (int j = 0; j < m; ++j)
-				{
-						mp[i][j] = (str[j] != '#');
-						if (str[j] == 'A') start = {i, j};
-						if (str[j] == 'B') end = {i, j};
-				}
-		}
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    int n, m; cin >> n >> m;
+    vec<2, bool> mp(n, m, false), visited(n, m, false);
+    pii start, end;
+    for (int i = 0; i < n; ++i)
+    {
+        string str; cin >> str;
+        for (int j = 0; j < m; ++j)
+        {
+            mp[i][j] = (str[j] != '#');
+            if (str[j] == 'A') start = {i, j};
+            if (str[j] == 'B') end = {i, j};
+        }
+    }
 
-		auto check = [&](int i, int j) { return (i >= 0 && i < n && j >= 0 && j < m && mp[i][j] && !visited[i][j]); };
+    auto check = [&](int i, int j) { return (i >= 0 && i < n && j >= 0 && j < m && mp[i][j] && !visited[i][j]); };
 
-		queue<pii> q;
-		q.push(start);
-		vec<2, pii> prev(n, m);
-		prev[start.F][start.S] = {-1, -1}; visited[start.F][start.S] = true;
-		bool possible = false;
-		while (!q.empty())
-		{
-				auto u = q.front();
-				q.pop();
+    queue<pii> q;
+    q.push(start);
+    vec<2, pii> prev(n, m);
+    prev[start.F][start.S] = {-1, -1}; visited[start.F][start.S] = true;
+    bool possible = false;
+    while (!q.empty())
+    {
+        auto u = q.front();
+        q.pop();
 
-				if (u == end) { possible = true; break; }
-				if (check(u.F+1, u.S)) { q.push({u.F+1, u.S}); prev[u.F+1][u.S] = u; visited[u.F+1][u.S] = true; }
-				if (check(u.F-1, u.S)) { q.push({u.F-1, u.S}); prev[u.F-1][u.S] = u; visited[u.F-1][u.S] = true; }
-				if (check(u.F, u.S+1)) { q.push({u.F, u.S+1}); prev[u.F][u.S+1] = u; visited[u.F][u.S+1] = true; }
-				if (check(u.F, u.S-1)) { q.push({u.F, u.S-1}); prev[u.F][u.S-1] = u; visited[u.F][u.S-1] = true; }
-		}
+        if (u == end) { possible = true; break; }
+        if (check(u.F+1, u.S)) { q.push({u.F+1, u.S}); prev[u.F+1][u.S] = u; visited[u.F+1][u.S] = true; }
+        if (check(u.F-1, u.S)) { q.push({u.F-1, u.S}); prev[u.F-1][u.S] = u; visited[u.F-1][u.S] = true; }
+        if (check(u.F, u.S+1)) { q.push({u.F, u.S+1}); prev[u.F][u.S+1] = u; visited[u.F][u.S+1] = true; }
+        if (check(u.F, u.S-1)) { q.push({u.F, u.S-1}); prev[u.F][u.S-1] = u; visited[u.F][u.S-1] = true; }
+    }
 
-		if (!possible) cout << "NO\n";
-		else
-		{
-				cout << "YES\n";
-				pii lst = {-1, -1};
-				stringstream res;
-				for (int i = end.F, j = end.S; i != -1 || j != -1; tie(i, j) = prev[i][j])
-				{
-						if (lst == make_pair(-1, -1)) { lst = {i, j}; continue; }
-						if (i-1 == lst.F && j == lst.S) res << 'U';
-						else if (i+1 == lst.F && j == lst.S) res << 'D';
-						else if (i == lst.F && j+1 == lst.S) res << 'R';
-						else if (i == lst.F && j-1 == lst.S) res << 'L';
-						lst = {i, j};
-				}
-				string ans = res.str(); reverse(all(ans));
-				cout << ans.size() << '\n' << ans << '\n';
-		}
-		return 0;
+    if (!possible) cout << "NO\n";
+    else
+    {
+        cout << "YES\n";
+        pii lst = {-1, -1};
+        stringstream res;
+        for (int i = end.F, j = end.S; i != -1 || j != -1; tie(i, j) = prev[i][j])
+        {
+            if (lst == make_pair(-1, -1)) { lst = {i, j}; continue; }
+            if (i-1 == lst.F && j == lst.S) res << 'U';
+            else if (i+1 == lst.F && j == lst.S) res << 'D';
+            else if (i == lst.F && j+1 == lst.S) res << 'R';
+            else if (i == lst.F && j-1 == lst.S) res << 'L';
+            lst = {i, j};
+        }
+        string ans = res.str(); reverse(all(ans));
+        cout << ans.size() << '\n' << ans << '\n';
+    }
+    return 0;
 }
 ```
 
@@ -107,32 +107,32 @@ vec<1, int> adj[MAXN];
 vec<1, bool> visited(MAXN, false);
 void DFS(int u)
 {
-		visited[u] = true;
-		for (auto &v : adj[u])
-				if (!visited[v]) DFS(v);
+    visited[u] = true;
+    for (auto &v : adj[u])
+        if (!visited[v]) DFS(v);
 }
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		int n, m; cin >> n >> m;
-		while (m--)
-		{
-				int u, v; cin >> u >> v;
-				adj[u].push_back(v);
-				adj[v].push_back(u);
-		}
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    int n, m; cin >> n >> m;
+    while (m--)
+    {
+        int u, v; cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
 
-		vec<1, int> components;
-		for (int i = 1; i <= n; ++i)
-		{
-				if (visited[i]) continue;
-				components.push_back(i);
-				DFS(i);
-		}
-		cout << components.size()-1 << '\n';
-		for (int i = 1; i < components.size(); ++i)
-				cout << components[i-1] << " " << components[i] << '\n';
-		return 0;
+    vec<1, int> components;
+    for (int i = 1; i <= n; ++i)
+    {
+        if (visited[i]) continue;
+        components.push_back(i);
+        DFS(i);
+    }
+    cout << components.size()-1 << '\n';
+    for (int i = 1; i < components.size(); ++i)
+        cout << components[i-1] << " " << components[i] << '\n';
+    return 0;
 }
 ```
 
@@ -144,56 +144,56 @@ Can use 0-1 BFS \(O\(E\)\) instead of Dijkstra which works in \(O\(V+E\)\)
 #define INF (1<<30)
 void zeroOneBFS(int s, int n, vector<pii> adj[], vector<int> &dist, vector<int> &prev)
 {
-		dist.assign(n, INF);
-		prev.assign(n, -1);
-		dist[s] = 0;
-		deque<int> dq;
-		dq.push_front(s);
-		while (!dq.empty())
-		{
-				int u = dq.front();
-				dq.pop_front();
-				for (auto &edge : adj[u])
-				{
-						int v = edge.first, w = edge.second;
-						if (dist[u] + w < dist[v])
-						{
-								dist[v] = dist[u] + w;
-								prev[v] = u;
-								if (w == 1) dq.push_back(v);
-								else dq.push_front(v);
-						}
-				}
-		}
+    dist.assign(n, INF);
+    prev.assign(n, -1);
+    dist[s] = 0;
+    deque<int> dq;
+    dq.push_front(s);
+    while (!dq.empty())
+    {
+        int u = dq.front();
+        dq.pop_front();
+        for (auto &edge : adj[u])
+        {
+            int v = edge.first, w = edge.second;
+            if (dist[u] + w < dist[v])
+            {
+                dist[v] = dist[u] + w;
+                prev[v] = u;
+                if (w == 1) dq.push_back(v);
+                else dq.push_front(v);
+            }
+        }
+    }
 }
 bool findPath(int from, int to, vector<int> &prev, vector<int> &path)
 {
-		for (int cur = to; cur != -1; cur = prev[cur])
-				path.push_back(cur);
-		reverse(path.begin(), path.end());
-		return (!path.empty() && *path.begin() == from);
+    for (int cur = to; cur != -1; cur = prev[cur])
+        path.push_back(cur);
+    reverse(path.begin(), path.end());
+    return (!path.empty() && *path.begin() == from);
 }
 
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		int n, m; cin >> n >> m;
-		vec<1, pii> adj[n+1];
-		while (m--)
-		{
-				int u, v; cin >> u >> v;
-				adj[u].push_back({v, 1});
-				adj[v].push_back({u, 1});
-		}
-		vec<1, int> dist, prev, path;
-		zeroOneBFS(1, n+1, adj, dist, prev);
-		if (!findPath(1, n, prev, path)) cout << "IMPOSSIBLE\n";
-		else
-		{
-				cout << path.size() << '\n';
-				for (auto &x : path) cout << x << " ";
-		}
-		return 0;
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    int n, m; cin >> n >> m;
+    vec<1, pii> adj[n+1];
+    while (m--)
+    {
+        int u, v; cin >> u >> v;
+        adj[u].push_back({v, 1});
+        adj[v].push_back({u, 1});
+    }
+    vec<1, int> dist, prev, path;
+    zeroOneBFS(1, n+1, adj, dist, prev);
+    if (!findPath(1, n, prev, path)) cout << "IMPOSSIBLE\n";
+    else
+    {
+        cout << path.size() << '\n';
+        for (auto &x : path) cout << x << " ";
+    }
+    return 0;
 }
 ```
 
@@ -206,34 +206,34 @@ vec<1, bool> vis(MAXN, false);
 bool notPossible = false;
 void DFS(int u, int team = 0)
 {
-		vis[u] = true; res[u] = team;
-		for (auto &v : adj[u])
-		{
-				if (!vis[v]) DFS(v, !team);
-				else if (res[v] == res[u]) { notPossible = true; return; }
-				if (notPossible) return;
-		}
+    vis[u] = true; res[u] = team;
+    for (auto &v : adj[u])
+    {
+        if (!vis[v]) DFS(v, !team);
+        else if (res[v] == res[u]) { notPossible = true; return; }
+        if (notPossible) return;
+    }
 }
 
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		int n, m; cin >> n >> m;
-		while (m--)
-		{
-				int u, v; cin >> u >> v;
-				adj[u].push_back(v);
-				adj[v].push_back(u);
-		}
-		for (int i = 1; i <= n; ++i)
-				if (!vis[i]) DFS(i);
-		if (notPossible) cout << "IMPOSSIBLE\n";
-		else
-		{
-				for (int i = 1; i <= n; ++i) cout << res[i]+1 << " ";
-				cout << '\n';
-		}
-		return 0;
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    int n, m; cin >> n >> m;
+    while (m--)
+    {
+        int u, v; cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    for (int i = 1; i <= n; ++i)
+        if (!vis[i]) DFS(i);
+    if (notPossible) cout << "IMPOSSIBLE\n";
+    else
+    {
+        for (int i = 1; i <= n; ++i) cout << res[i]+1 << " ";
+        cout << '\n';
+    }
+    return 0;
 }
 ```
 
@@ -246,53 +246,53 @@ bool found = false, backtracking = false; int backNode = -1;
 
 void DFS(int u, int x = 0, int prev = -1)
 {
-		vis[u] = x;
-		for (auto &v : adj[u])
-		{
-				if (v == prev) continue;
-				if (vis[v] == -1) DFS(v, x+1, u);
-				else
-				{
-						int cur = (x+1) - vis[v];
-						res.push_back(v); res.push_back(u);
-						if (cur >= 2)
-						{
-								found = true, backtracking = true; backNode = v;
-								return;
-						}
-				}
-				if (backtracking)
-				{
-						res.push_back(u);
-						if (u == backNode) backtracking = false;
-				}
-				if (found) return;
-		}
+    vis[u] = x;
+    for (auto &v : adj[u])
+    {
+        if (v == prev) continue;
+        if (vis[v] == -1) DFS(v, x+1, u);
+        else
+        {
+            int cur = (x+1) - vis[v];
+            res.push_back(v); res.push_back(u);
+            if (cur >= 2)
+            {
+                found = true, backtracking = true; backNode = v;
+                return;
+            }
+        }
+        if (backtracking)
+        {
+            res.push_back(u);
+            if (u == backNode) backtracking = false;
+        }
+        if (found) return;
+    }
 }
 
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		int n, m; cin >> n >> m;
-		while (m--)
-		{
-				int u, v; cin >> u >> v;
-				adj[u].push_back(v);
-				adj[v].push_back(u);
-		}
-		for (int i = 1; i <= n; ++i)
-		{
-				if (vis[i] == -1) DFS(i);
-				if (found) break;
-		}
-		if (!found) cout << "IMPOSSIBLE\n";
-		else
-		{
-				cout << res.size() << '\n';
-				for (auto &x : res) cout << x << " ";
-				cout << '\n';
-		}
-		return 0;
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    int n, m; cin >> n >> m;
+    while (m--)
+    {
+        int u, v; cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    for (int i = 1; i <= n; ++i)
+    {
+        if (vis[i] == -1) DFS(i);
+        if (found) break;
+    }
+    if (!found) cout << "IMPOSSIBLE\n";
+    else
+    {
+        cout << res.size() << '\n';
+        for (auto &x : res) cout << x << " ";
+        cout << '\n';
+    }
+    return 0;
 }
 ```
 
@@ -302,76 +302,76 @@ signed main()
 const int dr[] = {0, 1, 0, -1}, dc[] = {1, 0, -1, 0};
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		int n, m; cin >> n >> m;
-		vec<2, bool> isSafe(n, m), vis(n, m, false);
-		vec<1, pii> monsters; pii character;
-		for (int i = 0; i < n; ++i)
-		{
-				string str; cin >> str;
-				for (int j = 0; j < m; ++j)
-				{
-						isSafe[i][j] = (str[j] != '#');
-						if (str[j] == 'M') { monsters.push_back({i, j}); isSafe[i][j] = false; }
-						else if (str[j] == 'A') character = {i, j};
-				}
-		}
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    int n, m; cin >> n >> m;
+    vec<2, bool> isSafe(n, m), vis(n, m, false);
+    vec<1, pii> monsters; pii character;
+    for (int i = 0; i < n; ++i)
+    {
+        string str; cin >> str;
+        for (int j = 0; j < m; ++j)
+        {
+            isSafe[i][j] = (str[j] != '#');
+            if (str[j] == 'M') { monsters.push_back({i, j}); isSafe[i][j] = false; }
+            else if (str[j] == 'A') character = {i, j};
+        }
+    }
 
-		queue<pair<pii, bool>> q;
-		q.push({character, true});
-		for (auto &x : monsters) q.push({x, false});
+    queue<pair<pii, bool>> q;
+    q.push({character, true});
+    for (auto &x : monsters) q.push({x, false});
 
-		bool found = false; pii foundPos;
-		vec<2, pii> lst(n, m, make_pair(-1, -1));
-		while (!q.empty())
-		{
-				int sz = q.size();
-				while (sz--)
-				{
-						auto u = q.front(); q.pop();
-						if (u.S)
-						{
-								if (!isSafe[u.F.F][u.F.S]) continue;
-								vis[u.F.F][u.F.S] = true;
-								if (u.F.F == 0 || u.F.F == n-1 || u.F.S == 0 || u.F.S == m-1) { found = true; foundPos = {u.F.F, u.F.S}; break; }
-						}
-						else isSafe[u.F.F][u.F.S] = false;
-						
-						for (int i = 0; i < 4; ++i)
-						{
-								int newR = u.F.F + dr[i], newC = u.F.S + dc[i];
-								if (newR >= 0 && newR < n && newC >= 0 && newC < m && isSafe[newR][newC])
-								{
-										if (!u.S || (u.S && !vis[newR][newC]))
-										{
-												q.push({{newR, newC}, u.S});
-												if (u.S) lst[newR][newC] = {u.F.F, u.F.S};
-										}
-								}
-						}
-				}
-				if (found) break;
-		}
+    bool found = false; pii foundPos;
+    vec<2, pii> lst(n, m, make_pair(-1, -1));
+    while (!q.empty())
+    {
+        int sz = q.size();
+        while (sz--)
+        {
+            auto u = q.front(); q.pop();
+            if (u.S)
+            {
+                if (!isSafe[u.F.F][u.F.S]) continue;
+                vis[u.F.F][u.F.S] = true;
+                if (u.F.F == 0 || u.F.F == n-1 || u.F.S == 0 || u.F.S == m-1) { found = true; foundPos = {u.F.F, u.F.S}; break; }
+            }
+            else isSafe[u.F.F][u.F.S] = false;
+            
+            for (int i = 0; i < 4; ++i)
+            {
+                int newR = u.F.F + dr[i], newC = u.F.S + dc[i];
+                if (newR >= 0 && newR < n && newC >= 0 && newC < m && isSafe[newR][newC])
+                {
+                    if (!u.S || (u.S && !vis[newR][newC]))
+                    {
+                        q.push({{newR, newC}, u.S});
+                        if (u.S) lst[newR][newC] = {u.F.F, u.F.S};
+                    }
+                }
+            }
+        }
+        if (found) break;
+    }
 
-		if (!found) cout << "NO\n";
-		else
-		{
-				cout << "YES\n";
-				pii prev = {-1, -1};
-				string res;
-				for (int i = foundPos.F, j = foundPos.S; i != -1 || j != -1; tie(i, j) = lst[i][j])
-				{
-						if (prev.F == -1 && prev.S == -1) { prev = {i, j}; continue; }
-						if (i == prev.F && j+1 == prev.S) res += 'R';
-						else if (i == prev.F && j-1 == prev.S) res += 'L';
-						else if (i+1 == prev.F && j == prev.S) res += 'D';
-						else if (i-1 == prev.F && j == prev.S) res += 'U';
-						prev = {i, j};
-				}
-				reverse(res.begin(), res.end());
-				cout << res.size() << '\n' << res << '\n';
-		}
-		return 0;
+    if (!found) cout << "NO\n";
+    else
+    {
+        cout << "YES\n";
+        pii prev = {-1, -1};
+        string res;
+        for (int i = foundPos.F, j = foundPos.S; i != -1 || j != -1; tie(i, j) = lst[i][j])
+        {
+            if (prev.F == -1 && prev.S == -1) { prev = {i, j}; continue; }
+            if (i == prev.F && j+1 == prev.S) res += 'R';
+            else if (i == prev.F && j-1 == prev.S) res += 'L';
+            else if (i+1 == prev.F && j == prev.S) res += 'D';
+            else if (i-1 == prev.F && j == prev.S) res += 'U';
+            prev = {i, j};
+        }
+        reverse(res.begin(), res.end());
+        cout << res.size() << '\n' << res << '\n';
+    }
+    return 0;
 }
 ```
 
@@ -381,44 +381,44 @@ signed main()
 #define INF (1LL<<61)
 void dijkstra(int s, int n, vector<pii> adj[], vector<int> &dist, vector<int> &prev)
 {
-		dist.assign(n, INF);
-		prev.assign(n, -1);
-		dist[s] = 0;
-		priority_queue<pii, vector<pii>, greater<pii>> pq;
-		pq.push({0, s});
-		while (!pq.empty())
-		{
-				int u = pq.top().second, d = pq.top().first;
-				pq.pop();
-				if (d != dist[u]) continue;
-				for (auto &edge : adj[u])
-				{
-						int v = edge.first, w = edge.second;
-						if (dist[u] + w < dist[v])
-						{
-								dist[v] = dist[u] + w;
-								prev[v] = u;
-								pq.push({dist[v], v});
-						}
-				}
-		}
+    dist.assign(n, INF);
+    prev.assign(n, -1);
+    dist[s] = 0;
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    pq.push({0, s});
+    while (!pq.empty())
+    {
+        int u = pq.top().second, d = pq.top().first;
+        pq.pop();
+        if (d != dist[u]) continue;
+        for (auto &edge : adj[u])
+        {
+            int v = edge.first, w = edge.second;
+            if (dist[u] + w < dist[v])
+            {
+                dist[v] = dist[u] + w;
+                prev[v] = u;
+                pq.push({dist[v], v});
+            }
+        }
+    }
 }
 
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		int n, m; cin >> n >> m;
-		vec<1, pii> adj[n+1];
-		while (m--)
-		{
-				int u, v, w; cin >> u >> v >> w;
-				adj[u].push_back({v, w});
-		}
-		vec<1, int> dist, prev;
-		dijkstra(1, n+1, adj, dist, prev);
-		for (int i = 1; i <= n; ++i) cout << dist[i] << " ";
-		cout << '\n';
-		return 0;
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    int n, m; cin >> n >> m;
+    vec<1, pii> adj[n+1];
+    while (m--)
+    {
+        int u, v, w; cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+    }
+    vec<1, int> dist, prev;
+    dijkstra(1, n+1, adj, dist, prev);
+    for (int i = 1; i <= n; ++i) cout << dist[i] << " ";
+    cout << '\n';
+    return 0;
 }
 ```
 
@@ -428,27 +428,27 @@ signed main()
 #define INF (1LL<<61)
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		int n, m, q; cin >> n >> m >> q;
-		vec<2, int> adj(n+1, n+1, INF);
-		for (int i = 1; i <= n; ++i) adj[i][i] = 0;
-		while (m--)
-		{
-				int u, v, w; cin >> u >> v >> w;
-				adj[u][v] = min(w, adj[u][v]);
-				adj[v][u] = min(w, adj[v][u]);
-		}
-		for (int k = 1; k <= n; ++k)
-				for (int i = 1; i <= n; ++i)
-						for (int j = 1; j <= n; ++j)
-								if (adj[i][k] < INF && adj[k][j] < INF) adj[i][j] = min(adj[i][j], adj[i][k] + adj[k][j]);
-		while (q--)
-		{
-				int u, v; cin >> u >> v;
-				if (adj[u][v] == INF) cout << "-1\n";
-				else cout << adj[u][v] << '\n';
-		}
-		return 0;
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    int n, m, q; cin >> n >> m >> q;
+    vec<2, int> adj(n+1, n+1, INF);
+    for (int i = 1; i <= n; ++i) adj[i][i] = 0;
+    while (m--)
+    {
+        int u, v, w; cin >> u >> v >> w;
+        adj[u][v] = min(w, adj[u][v]);
+        adj[v][u] = min(w, adj[v][u]);
+    }
+    for (int k = 1; k <= n; ++k)
+        for (int i = 1; i <= n; ++i)
+            for (int j = 1; j <= n; ++j)
+                if (adj[i][k] < INF && adj[k][j] < INF) adj[i][j] = min(adj[i][j], adj[i][k] + adj[k][j]);
+    while (q--)
+    {
+        int u, v; cin >> u >> v;
+        if (adj[u][v] == INF) cout << "-1\n";
+        else cout << adj[u][v] << '\n';
+    }
+    return 0;
 }
 ```
 
@@ -461,67 +461,67 @@ We can use negative edge path finding algorithms like bellman ford, I used SPFA 
 set<int> st;
 bool spfa(int s, int n, vector<pii> adj[], vector<int> &dist, vector<int> &prev)
 {
-		dist.assign(n, -INF);
-		prev.assign(n, -1);
-		vector<int> cnt(n, 0);
-		vector<bool> inqueue(n, false);
-		queue<int> q;
-		dist[s] = 0;
-		q.push(s);
-		inqueue[s] = true;
-		bool cycle = false;
-		while (!q.empty())
-		{
-				int u = q.front();
-				q.pop();
-				inqueue[u] = false;
-				for (auto &edge : adj[u])
-				{
-						int v = edge.first, w = edge.second;
-						if (dist[u] + w > dist[v])
-						{
-								dist[v] = dist[u] + w;
-								prev[v] = u;
-								if (!inqueue[v])
-								{
-										cnt[v]++;
-										if (cnt[v] > n) { st.insert(u); cycle = true; continue; }
-										q.push(v);
-										inqueue[v] = true;
-								}
-						}
-				}
-		}
-		return !cycle;
+    dist.assign(n, -INF);
+    prev.assign(n, -1);
+    vector<int> cnt(n, 0);
+    vector<bool> inqueue(n, false);
+    queue<int> q;
+    dist[s] = 0;
+    q.push(s);
+    inqueue[s] = true;
+    bool cycle = false;
+    while (!q.empty())
+    {
+        int u = q.front();
+        q.pop();
+        inqueue[u] = false;
+        for (auto &edge : adj[u])
+        {
+            int v = edge.first, w = edge.second;
+            if (dist[u] + w > dist[v])
+            {
+                dist[v] = dist[u] + w;
+                prev[v] = u;
+                if (!inqueue[v])
+                {
+                    cnt[v]++;
+                    if (cnt[v] > n) { st.insert(u); cycle = true; continue; }
+                    q.push(v);
+                    inqueue[v] = true;
+                }
+            }
+        }
+    }
+    return !cycle;
 }
 
 int n, m;
 void DFS(vec<1, pii> adj[], vec<1, bool> &vis, int u)
 {
-		vis[u] = true;
-		for (auto &v : adj[u])
-				if (!vis[v.F]) DFS(adj, vis, v.F);
+    vis[u] = true;
+    for (auto &v : adj[u])
+        if (!vis[v.F]) DFS(adj, vis, v.F);
 }
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		cin >> n >> m;
-		vec<1, pii> adj[n+1];
-		while (m--)
-		{
-				int u, v, w; cin >> u >> v >> w;
-				adj[u].push_back({v, w});
-		}
-		vec<1, int> dist, prev;
-		if (spfa(1, n+1, adj, dist, prev)) cout << dist[n] << '\n';
-		else
-		{
-				vec<1, bool> vis(n+1, false);
-				for (auto &x : st)
-						if (!vis[x]) DFS(adj, vis, x);
-				if (vis[1] || vis[n]) cout << "-1\n";
-				else cout << dist[n] << '\n';
-	}
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    cin >> n >> m;
+    vec<1, pii> adj[n+1];
+    while (m--)
+    {
+        int u, v, w; cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+    }
+    vec<1, int> dist, prev;
+    if (spfa(1, n+1, adj, dist, prev)) cout << dist[n] << '\n';
+    else
+    {
+        vec<1, bool> vis(n+1, false);
+        for (auto &x : st)
+            if (!vis[x]) DFS(adj, vis, x);
+        if (vis[1] || vis[n]) cout << "-1\n";
+        else cout << dist[n] << '\n';
+    }
 	return 0;
 }
 ```
@@ -532,55 +532,55 @@ signed main()
 #define INF (1LL<<61)
 void dijkstra(int s, int n, vector<pii> adj[], vector<int> &dist, vector<int> &prev)
 {
-		dist.assign(n, INF);
-		prev.assign(n, -1);
-		dist[s] = 0;
-		priority_queue<pii, vector<pii>, greater<pii>> pq;
-		pq.push({0, s});
-		while (!pq.empty())
-		{
-				int u = pq.top().second, d = pq.top().first;
-				pq.pop();
-				if (d != dist[u]) continue;
-				for (auto &edge : adj[u])
-				{
-						int v = edge.first, w = edge.second;
-						if (dist[u] + w < dist[v])
-						{
-								dist[v] = dist[u] + w;
-								prev[v] = u;
-								pq.push({dist[v], v});
-						}
-				}
-		}
+    dist.assign(n, INF);
+    prev.assign(n, -1);
+    dist[s] = 0;
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    pq.push({0, s});
+    while (!pq.empty())
+    {
+        int u = pq.top().second, d = pq.top().first;
+        pq.pop();
+        if (d != dist[u]) continue;
+        for (auto &edge : adj[u])
+        {
+            int v = edge.first, w = edge.second;
+            if (dist[u] + w < dist[v])
+            {
+                dist[v] = dist[u] + w;
+                prev[v] = u;
+                pq.push({dist[v], v});
+            }
+        }
+    }
 }
 
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		int n, m; cin >> n >> m;
-		vec<1, pii> adj[n+1], adjR[n+1];
-		vec<1, tuple<int, int, int>> edges;
-		while (m--)
-		{
-				int u, v, w; cin >> u >> v >> w;
-				edges.push_back({u, v, w});
-				adj[u].push_back({v, w});
-				adjR[v].push_back({u, w});
-		}
-		vec<1, int> dist1, dist2, prev;
-		dijkstra(1, n+1, adj, dist1, prev);
-		dijkstra(n, n+1, adjR, dist2, prev);
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    int n, m; cin >> n >> m;
+    vec<1, pii> adj[n+1], adjR[n+1];
+    vec<1, tuple<int, int, int>> edges;
+    while (m--)
+    {
+        int u, v, w; cin >> u >> v >> w;
+        edges.push_back({u, v, w});
+        adj[u].push_back({v, w});
+        adjR[v].push_back({u, w});
+    }
+    vec<1, int> dist1, dist2, prev;
+    dijkstra(1, n+1, adj, dist1, prev);
+    dijkstra(n, n+1, adjR, dist2, prev);
 
-		int res = dist1[n];
-		for (auto &x : edges)
-		{
-				int u, v, w; tie(u, v, w) = x;
-				int cur = dist1[u] + w/2 + dist2[v];
-				res = min(res, cur);
-		}
-		cout << res << '\n';
-		return 0;
+    int res = dist1[n];
+    for (auto &x : edges)
+    {
+        int u, v, w; tie(u, v, w) = x;
+        int cur = dist1[u] + w/2 + dist2[v];
+        res = min(res, cur);
+    }
+    cout << res << '\n';
+    return 0;
 }
 ```
 
@@ -591,43 +591,43 @@ struct edge { int u, v, w; };
 #define INF (1LL<<61)
 signed main()
 {
-		ios_base::sync_with_stdio(false); cin.tie(NULL);
-		int n, m; cin >> n >> m;
-		vec<1, edge> edges(m);
-		for (auto &x : edges) cin >> x.u >> x.v >> x.w;
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    int n, m; cin >> n >> m;
+    vec<1, edge> edges(m);
+    for (auto &x : edges) cin >> x.u >> x.v >> x.w;
 
-		vec<1, int> dist(n+1, INF), par(n+1, -1);
-		int x;
-		for (int i = 0; i < n; ++i)
-		{
-				x = -1;
-				for (auto &e : edges)
-				{
-						if (dist[e.u] + e.w < dist[e.v])
-						{
-								dist[e.v] = dist[e.u] + e.w;
-								par[e.v] = e.u;
-								x = e.v;
-						}
-				}
-		}
+    vec<1, int> dist(n+1, INF), par(n+1, -1);
+    int x;
+    for (int i = 0; i < n; ++i)
+    {
+        x = -1;
+        for (auto &e : edges)
+        {
+            if (dist[e.u] + e.w < dist[e.v])
+            {
+                dist[e.v] = dist[e.u] + e.w;
+                par[e.v] = e.u;
+                x = e.v;
+            }
+        }
+    }
 
-		if (x == -1) cout << "NO\n";
-		else
-		{
-				cout << "YES\n";
-				for (int i = 0; i < n; ++i) x = par[x];
-				vec<1, int> cycle;
-				for (int v = x; ; v = par[v])
-				{
-						cycle.push_back(v);
-						if (v == x && cycle.size() > 1) break;
-				}
-				reverse(all(cycle));
-				for (auto &x : cycle) cout << x << " ";
-				cout << '\n';
-		}
-		return 0;
+    if (x == -1) cout << "NO\n";
+    else
+    {
+        cout << "YES\n";
+        for (int i = 0; i < n; ++i) x = par[x];
+        vec<1, int> cycle;
+        for (int v = x; ; v = par[v])
+        {
+            cycle.push_back(v);
+            if (v == x && cycle.size() > 1) break;
+        }
+        reverse(all(cycle));
+        for (auto &x : cycle) cout << x << " ";
+        cout << '\n';
+    }
+    return 0;
 }
 ```
 
