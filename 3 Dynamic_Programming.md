@@ -249,17 +249,8 @@ signed main()
 #### [Alternative Solution Rectangle Cutting]
 ```cpp
 //Complexity O(a*a*b + b*b*a)
-#include<bits/stdc++.h>
-#define lld long long
-#define pb push_back
-#define mk make_pair
-#define MAX (lld)1e18+7
-#define lim (lld)1e9+7
-#define MAX2 (int)2e5+9
-#define ff first
-#define ss second
+#define lim 1e9+7
 #define fastio ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-using namespace std;
 int main()
 {
 	fastio
