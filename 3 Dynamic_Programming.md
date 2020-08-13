@@ -246,7 +246,7 @@ signed main()
 }
 ```
 
-#### [Alternative Solution Rectangle Cutting]
+#### Alternative Solution Rectangle Cutting
 ```cpp
 //Complexity O(a*a*b + b*b*a)
 #define lim 1e9+7
